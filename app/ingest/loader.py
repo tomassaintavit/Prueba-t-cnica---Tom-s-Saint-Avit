@@ -5,6 +5,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any
 
+from pypdf import PdfReader
+
 
 class DocumentLoader(ABC):
     @abstractmethod
@@ -16,6 +18,17 @@ class TXTLoader(DocumentLoader):
     def load(self, file_path: str | Path) -> str:
         path = Path(file_path)
         return path.read_text(encoding="utf-8")
+
+
+class PDFLoader(DocumentLoader):
+    def load(self, file_path: str | Path) -> str:
+        reader = PdfReader(file_path)
+        pages = []
+        for page in reader.pages:
+            text = page.extract_text()
+            if text:
+                pages.append(text)
+        return "\n\n".join(pages)
 
 
 class JSONLoader(DocumentLoader):
@@ -54,6 +67,7 @@ def get_loader(file_path: str | Path) -> DocumentLoader:
         ".txt": TXTLoader,
         ".md": TXTLoader,
         ".json": JSONLoader,
+        ".pdf": PDFLoader,
     }
     loader_cls = loaders.get(ext)
     if loader_cls is None:
