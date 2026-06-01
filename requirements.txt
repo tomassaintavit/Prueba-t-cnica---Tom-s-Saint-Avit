@@ -24,3 +24,5 @@ httpx==0.28.1
 
 # Frontend
 streamlit==1.43.2
+
+# No external evaluation libs needed (uses Ollama as judge)

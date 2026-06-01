@@ -1,0 +1,77 @@
+{
+  "metrics": {
+    "faithfulness": 0.64,
+    "context_relevance": 0.64,
+    "answer_relevance": 0.64,
+    "mrr_at_5": 0.8
+  },
+  "avg_latency": 9.16,
+  "avg_retrieval_latency": 0.58,
+  "per_question": [
+    {
+      "question": "¿Qué hago si me aparece 'Usuario o contraseña incorrectos'?",
+      "faithfulness": 0.6,
+      "context_relevance": 0.6,
+      "answer_relevance": 0.6,
+      "mrr_at_5": 1.0,
+      "retrieval_latency": 0.85,
+      "total_latency": 7.07,
+      "retrieved_sources": [
+        "Documentación 3.md"
+      ],
+      "answer": "* Verifica que el usuario y la contraseña sean correctos [1].\n* Comprueba si la cuenta está activa.\n* Revisa si la cuenta se encuentra bloqueada.\n* Si el error continúa, solicita al administrador el restablecimiento de la contraseña [2].\n\nNo encontré información sobre cómo proceder en caso de que no se pueda restablecer la contraseña."
+    },
+    {
+      "question": "El catálogo carga muy lento, ¿qué puedo hacer?",
+      "faithfulness": 0.8,
+      "context_relevance": 0.6,
+      "answer_relevance": 0.8,
+      "mrr_at_5": 1.0,
+      "retrieval_latency": 0.32,
+      "total_latency": 11.28,
+      "retrieved_sources": [
+        "Documentación 1.pdf",
+        "Documentación 4.json",
+        "Documentación 2.txt"
+      ],
+      "answer": "Aquí te presento las posibles causas y soluciones para el problema del catálogo que carga lentamente:\n\n* Alto volumen de materiales registrados. [1]\n + Solución: Usar filtros específicos y buscar por código de material cuando sea posible.\n* Filtros de búsqueda demasiado amplios. [1]\n + Solución: Reducir la amplitud del filtro de búsqueda.\n* Conexión lenta con la base de datos. [1]\n + Solución: Revisar el rendimiento del servidor y optimizar índices en la base de datos.\n* Índices de base de datos desactualizados. [1]\n + Solución: Archivar registros históricos poco consultados y actualizar los índices.\n\nInformación insuficiente"
+    },
+    {
+      "question": "No se guardan los cambios de un material, ¿qué puede ser?",
+      "faithfulness": 0.6,
+      "context_relevance": 0.6,
+      "answer_relevance": 0.6,
+      "mrr_at_5": 1.0,
+      "retrieval_latency": 0.56,
+      "total_latency": 2.75,
+      "retrieved_sources": [],
+      "answer": "No encontré información sobre esto en la documentación disponible."
+    },
+    {
+      "question": "Me sale error de conexión con la base de datos, ¿qué hago?",
+      "faithfulness": 0.6,
+      "context_relevance": 0.8,
+      "answer_relevance": 0.6,
+      "mrr_at_5": 1.0,
+      "retrieval_latency": 0.51,
+      "total_latency": 12.67,
+      "retrieved_sources": [
+        "Documentación 1.pdf",
+        "Documentación 4.json",
+        "Documentación 2.txt"
+      ],
+      "answer": "* Verificar que el servidor de base de datos esté activo y configurado correctamente [1].\n* Validar los parámetros de conexión, incluyendo host, puerto, nombre de base de datos, usuario y contraseña [2].\n* Confirmar conectividad de red y revisar si el puerto de conexión está habilitado [2].\n* Si el problema persiste, escalar al administrador de base de datos para obtener ayuda adicional [2].\n\nReferencias:\n[1] Documentación 2.txt\n[2] Documentación 4.json"
+    },
+    {
+      "question": "¿Cómo reinicio el servicio de autenticación?",
+      "faithfulness": 0.6,
+      "context_relevance": 0.6,
+      "answer_relevance": 0.6,
+      "mrr_at_5": 0.0,
+      "retrieval_latency": 0.68,
+      "total_latency": 12.04,
+      "retrieved_sources": [],
+      "answer": "No encontré información sobre esto en la documentación disponible."
+    }
+  ]
+}
