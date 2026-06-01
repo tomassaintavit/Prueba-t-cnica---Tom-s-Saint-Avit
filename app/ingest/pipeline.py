@@ -35,9 +35,11 @@ def run_ingest_pipeline(
         text = clean_text(text)
         chunks = chunk_text(text, chunk_size, chunk_overlap)
 
+        source = file_path.name
         ids = [str(uuid.uuid4()) for _ in chunks]
+        metadatas = [{"source": source} for _ in chunks]
         embeddings = embedder.encode_batch(chunks)
-        store.index(ids, chunks, embeddings)
+        store.index(ids, chunks, embeddings, metadatas)
         total_chunks += len(chunks)
 
     return total_chunks
