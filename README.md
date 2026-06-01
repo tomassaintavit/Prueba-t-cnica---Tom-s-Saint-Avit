@@ -37,6 +37,9 @@ pip install -r requirements.txt
 cp .env.example .env
 # Editar .env con tus configuraciones
 
+# Descargar modelo de Ollama (si usas LLM local)
+ollama pull llama3.2
+
 # Ejecutar ingesta de documentos
 python scripts/ingest_all.py
 
@@ -44,20 +47,41 @@ python scripts/ingest_all.py
 python scripts/run_api.py
 ```
 
-## Uso
+## Uso — API directa
 
 ```bash
-# Consultar desde CLI
 curl -X POST "http://localhost:8000/query" \
+  -H "Content-Type: application/json" \
+  -d '{"question": "No puedo acceder al dashboard"}'
+```
+
+## Uso — n8n
+
+1. Inicia n8n: `n8n start`
+2. Abre `http://localhost:5678`
+3. Importa el workflow: Workflows → Import → seleccionar `workflows/support_assistant.json`
+4. Activa el workflow con el toggle superior derecho
+5. Envía preguntas al webhook:
+
+```bash
+curl -X POST "http://localhost:5678/webhook/support-query" \
   -H "Content-Type: application/json" \
   -d '{"question": "¿Cómo reinicio el servicio de autenticación?"}'
 ```
+
+> **Nota:** Si el workflow no está activo, usa la URL de prueba:
+> `http://localhost:5678/webhook-test/support-query`
 
 ## Estructura
 
 ```
 ├── app/           # Código fuente Python
+│   ├── ingest/    # Carga, limpieza y chunking de documentos
+│   ├── embeddings/ # Generación de vectores (Sentence Transformers)
+│   ├── vector_store/ # ChromaDB (indexación y búsqueda)
+│   ├── llm/       # Abstracción de LLM (OpenAI + Ollama)
+│   └── api/       # FastAPI endpoints
 ├── docs/          # Documentación técnica (input del RAG)
-├── workflows/     # Workflows n8n
+├── workflows/     # Workflows exportados de n8n
 └── scripts/       # Scripts de utilidad
 ```
