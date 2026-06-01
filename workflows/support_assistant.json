@@ -1,6 +1,97 @@
 {
-  "name": "Support Assistant RAG",
-  "nodes": [],
-  "connections": {},
-  "version": 2
+  "name": "Unilink",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "support-query",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -208,
+        0
+      ],
+      "id": "19fe580e-2987-43b7-8639-04bc42f21d21",
+      "name": "Webhook",
+      "webhookId": "5376e51d-59ff-448b-aa04-3141c702bd2c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/query",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "= {{ $json.body.question }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        16,
+        0
+      ],
+      "id": "dff7a78d-796a-4652-9043-fbcac8ccea6a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        208,
+        0
+      ],
+      "id": "aef55b47-d53d-40c7-97dc-ccdf1daee0c3",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "975a2951-6540-4390-bd95-64fa06d2fb89",
+  "meta": {
+    "instanceId": "b801e1c1fd352205a10ae86d65f7f71dffff3a4ab52a78bd72bf673a4ecf4cb5"
+  },
+  "id": "DmtTQ6uKg3IMsBv4",
+  "tags": []
 }
