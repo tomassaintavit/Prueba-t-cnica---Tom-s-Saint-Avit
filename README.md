@@ -72,6 +72,15 @@ curl -X POST "http://localhost:5678/webhook/support-query" \
 > **Nota:** Si el workflow no está activo, usa la URL de prueba:
 > `http://localhost:5678/webhook-test/support-query`
 
+## Uso — Frontend Streamlit
+
+```bash
+# En otra terminal, con el venv activo y la API corriendo:
+streamlit run streamlit_app.py
+```
+
+Abre `http://localhost:8501` en el navegador.
+
 ## Estructura
 
 ```
