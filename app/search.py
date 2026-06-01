@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import logging
 import os
 
 from app.embeddings.embedder import Embedder
 from app.llm import get_llm
 from app.vector_store.chroma_store import VectorStore
+
+logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = """Eres un asistente que debe responder usando únicamente la información de los bloques CONTEXT anteriores.
 1. Responde la pregunta en máximo 150 palabras usando viñetas.
@@ -21,12 +24,20 @@ def answer_question(question: str) -> str:
     db_path = os.getenv("CHROMA_DB_PATH", "./chroma_db")
     collection = os.getenv("COLLECTION_NAME", "support_docs")
 
-    embedder = Embedder()
-    store = VectorStore(db_path, collection)
-    llm = get_llm()
+    try:
+        embedder = Embedder()
+        store = VectorStore(db_path, collection)
+        llm = get_llm()
+    except Exception as e:
+        logger.error(f"Error initializing components: {e}")
+        return "Error interno del sistema. No se pudo inicializar el asistente."
 
-    query_embedding = embedder.encode(question)
-    results = store.search(query_embedding, top_k)
+    try:
+        query_embedding = embedder.encode(question)
+        results = store.search(query_embedding, top_k)
+    except Exception as e:
+        logger.error(f"Error durante la búsqueda: {e}")
+        return "Error al buscar información en la documentación."
 
     valid_results = [r for r in results if r["score"] >= threshold]
 
@@ -43,4 +54,8 @@ def answer_question(question: str) -> str:
     context_str = "\n\n".join(context_blocks)
     user_prompt = f"{context_str}\n\nQUESTION: {question}"
 
-    return llm.generate(SYSTEM_PROMPT, user_prompt)
+    try:
+        return llm.generate(SYSTEM_PROMPT, user_prompt)
+    except Exception as e:
+        logger.error(f"Error en LLM: {e}")
+        return "Error al generar la respuesta. Intente nuevamente."
