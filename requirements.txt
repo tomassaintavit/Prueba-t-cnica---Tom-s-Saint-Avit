@@ -1,0 +1,19 @@
+# API
+fastapi==0.115.6
+uvicorn==0.34.0
+
+# Document processing
+pypdf==5.1.0
+python-multipart==0.0.19
+
+# Embeddings & Vector Store
+sentence-transformers==3.4.1
+chromadb==0.6.3
+
+# LLM Providers
+openai==1.58.1
+httpx==0.28.1
+
+# Utilities
+python-dotenv==1.0.1
+pydantic==2.10.4

@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.venv/
+
+# Vector store persistence
+chroma_db/
+
+# Environment
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# n8n local data (if running locally)
+n8n-data/
+
+# Jupyter notebooks (vibecoding evidence)
+*.ipynb
+
+# Agent logs (if any)
+logs/
+*.log
+
+# Planning and AI-assisted development evidence
+agents/
+PLAN_IMPLEMENTACION.md
+Plan_Tecnico_RAG_Unilink.md
+Evaluacion_Plan_Tecnico.md
+explicacion_sistema.md
