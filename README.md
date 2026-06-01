@@ -57,9 +57,7 @@ curl -X POST "http://localhost:8000/query" \
 
 ```
 ├── app/           # Código fuente Python
-├── agents/        # Contexto para asistentes IA
-├── docs/          # Documentación técnica
+├── docs/          # Documentación técnica (input del RAG)
 ├── workflows/     # Workflows n8n
-├── scripts/       # Scripts de utilidad
-└── chroma_db/     # Base de datos vectorial (generado)
+└── scripts/       # Scripts de utilidad
 ```
