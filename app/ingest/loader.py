@@ -18,6 +18,7 @@ def get_loader(file_path: str | Path) -> DocumentLoader:
     ext = Path(file_path).suffix.lower()
     loaders = {
         ".txt": TXTLoader,
+        ".md": TXTLoader,
     }
     loader_cls = loaders.get(ext)
     if loader_cls is None:
