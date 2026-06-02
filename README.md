@@ -24,7 +24,7 @@ y potenciado por LLMs locales (Ollama) o cloud (OpenAI).
 ```bash
 # Clonar repositorio
 git clone <repo-url>
-cd UNILINK
+cd <carpeta donde va a estar el sistema>
 
 # Crear entorno virtual
 python -m venv venv
