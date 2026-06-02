@@ -24,29 +24,45 @@ from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
-import httpx
+from openai import OpenAI
+
 from app.search import answer_question
 from app.embeddings.embedder import Embedder
 from app.vector_store.chroma_store import VectorStore
 
-# ── LLM judge (usa Ollama como evaluador) ──────────────────────────────
-JUDGE_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2")
-JUDGE_URL = f"{os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434').rstrip('/')}/api/chat"
+
+def _get_judge_client() -> tuple[OpenAI, str]:
+    provider = os.getenv("LLM_PROVIDER", "ollama").lower()
+
+    if provider == "groq":
+        return (
+            OpenAI(api_key=os.getenv("GROQ_API_KEY"), base_url="https://api.groq.com/openai/v1"),
+            os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
+        )
+    if provider == "openai":
+        return (
+            OpenAI(api_key=os.getenv("OPENAI_API_KEY")),
+            "gpt-4o-mini",
+        )
+    # ollama (local)
+    base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
+    return (
+        OpenAI(api_key="ollama", base_url=f"{base_url}/v1"),
+        os.getenv("OLLAMA_MODEL", "llama3.2"),
+    )
+
+
+CLIENT, JUDGE_MODEL = _get_judge_client()
 
 
 def judge(prompt: str) -> float:
     """Pide al LLM juez un puntaje 0-5 y lo normaliza a 0-1."""
-    response = httpx.post(
-        JUDGE_URL,
-        json={
-            "model": JUDGE_MODEL,
-            "messages": [{"role": "user", "content": prompt}],
-            "stream": False,
-            "options": {"temperature": 0},
-        },
-        timeout=30,
+    response = CLIENT.chat.completions.create(
+        model=JUDGE_MODEL,
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0,
     )
-    text = response.json()["message"]["content"].strip()
+    text = response.choices[0].message.content.strip()
 
     # Extraer el primer número encontrado
     import re
