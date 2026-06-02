@@ -9,15 +9,10 @@ from app.vector_store.chroma_store import VectorStore
 
 logger = logging.getLogger(__name__)
 
-REWRITE_PROMPT = """Extrae las 2 o 3 palabras clave de esta pregunta de soporte. Corrige errores ortográficos y reemplaza sinónimos informales por términos técnicos. Responde solo con las palabras separadas por espacios, sin puntuación ni explicaciones.
-
-Ejemplos:
-- ¿Cómo reinicio el servicio de autenticación? → autenticación credenciales
-- El sistema devuelve error 502 → error conexión servidor
-- No puedo acceder al dashboard → acceso sistema dashboard
+REWRITE_PROMPT = """Corrige solo los errores ortográficos de esta pregunta. No añadas, no resumas, no cambies el significado. Devuelve exactamente la misma pregunta con las palabras mal escritas corregidas.
 
 Original: {question}
-Palabras clave:"""
+Corregida:"""
 
 SYSTEM_PROMPT = """Eres un asistente que responde preguntas de soporte técnico. Responde únicamente con la respuesta directa, sin introducciones ni explicaciones sobre cómo respondes.
 
@@ -52,10 +47,9 @@ def answer_question(question: str) -> str:
         logger.error(f"Error initializing components: {e}")
         return "Error interno del sistema. No se pudo inicializar el asistente."
 
-    # rewritten = _rewrite_question(question, llm)
-    # logger.info(f"Original: {question} → Rewritten: {rewritten}")
-    # query_embedding = embedder.encode(rewritten)
-    query_embedding = embedder.encode(question)
+    rewritten = _rewrite_question(question, llm)
+    logger.info(f"Original: {question} → Rewritten: {rewritten}")
+    query_embedding = embedder.encode(rewritten)
     results = store.search(query_embedding, top_k)
   
 
