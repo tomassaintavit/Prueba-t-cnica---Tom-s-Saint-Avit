@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import uuid
 from pathlib import Path
 
@@ -12,13 +13,16 @@ from app.vector_store.chroma_store import VectorStore
 
 def run_ingest_pipeline(
     docs_dir: str | Path,
-    chunk_size: int = 1000,
-    chunk_overlap: int = 200,
-    embedding_model: str = "all-MiniLM-L6-v2",
+    chunk_size: int | None = None,
+    chunk_overlap: int | None = None,
+    embedding_model: str | None = None,
     db_path: str | Path = "./chroma_db",
     collection_name: str = "support_docs",
 ) -> int:
-    embedder = Embedder(embedding_model)
+    chunk_size = chunk_size or int(os.getenv("CHUNK_SIZE", "1000"))
+    chunk_overlap = chunk_overlap or int(os.getenv("CHUNK_OVERLAP", "200"))
+    model = embedding_model or os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
+    embedder = Embedder(model)
     store = VectorStore(db_path, collection_name)
     docs_dir = Path(docs_dir)
 
