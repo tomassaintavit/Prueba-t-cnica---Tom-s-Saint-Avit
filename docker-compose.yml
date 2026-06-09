@@ -1,0 +1,14 @@
+services:
+  rag-api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./chroma_db:/app/chroma_db
+      - ./.env:/app/.env
+      - model_cache:/root/.cache
+    env_file:
+      - .env
+
+volumes:
+  model_cache:
